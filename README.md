@@ -1,4 +1,4 @@
-# Almacén de Datos
+# Diario Online (HTML, JS, CSS Y TAILWINDCSS)
 
 Proyecto simple de inventario con autenticación Firebase y gestión básica de stock.
 
