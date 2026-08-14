@@ -30,19 +30,10 @@ const db = getFirestore(app);
 // ======================================                            ========================================== //
 // ============================================================================================================ //
 
-let redireccionamiento = false;
+
 
 onAuthStateChanged(auth, async (usuario) => {
 
-    // Redireccionar a index si no se esta logueado
-
-    if(!usuario){
-        if(!redireccionamiento && window.location.pathname !== "/index.html"){
-            redireccionamiento = true;
-            window.location.replace("/index.html")
-            return;
-        }
-    }
 
 
     // Recuperar nombre del usuario logueado
