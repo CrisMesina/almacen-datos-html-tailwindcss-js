@@ -1,45 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Registro</title>
     <link rel="stylesheet" href="/index.css">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<bodyc class="min-h-screen">
-    
-
-    <div class=" flex border min-h-screen w-full h-96">
-
-        <form class="flex flex-col p-5 rounded-lg h-auto mx-auto my-auto shadow-md shadow-white bg-white" id="formulario-login"> 
-
-            <div class="my-5">
-                <input type="text" id="nombre" placeholder="Ingresa tu nombre" class="p-2 bg-black/10 rounded-lg placeholder:italic placeholder:text-md placeholder:text-gray-500">
-            </div>
-            
-            <div class="mb-5">
-                <input type="email" id="email" placeholder="Ingresar Correo" class="p-2 bg-black/10 rounded-lg placeholder:italic placeholder:text-md placeholder:text-gray-500">
+<body class="min-h-screen bg-slate-950 text-white">
+    <div class="flex min-h-screen items-center justify-center px-4">
+        <div class="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900/90 p-8 shadow-2xl shadow-slate-950/60 backdrop-blur-sm">
+            <div class="mb-8 text-center">
+                <p class="text-xs uppercase tracking-[0.35em] text-violet-300">Mi diario</p>
+                <h1 class="mt-4 text-3xl font-bold text-white">Crear cuenta</h1>
             </div>
 
+            <form id="formulario-login" class="space-y-5">
+                <div>
+                    <label for="nombre" class="mb-2 block text-sm font-medium text-slate-300">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Ingresa tu nombre" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none">
+                </div>
 
-            <div class="mb-5">
-                <input type="password" id="contraseña" placeholder="Ingresar Contraseña" class="p-2 bg-black/10 rounded-lg placeholder:italic placeholder:text-md placeholder:text-gray-500">
-            </div>
-            
+                <div>
+                    <label for="email" class="mb-2 block text-sm font-medium text-slate-300">Correo</label>
+                    <input type="email" id="email" placeholder="correo@ejemplo.com" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none">
+                </div>
 
-            <div class="flex w-full">
-                <button id="registrarUsuario" type="button" class="p-2 mx-2 rounded-lg shadow-lg shadow-black font-bold hover:will-change-auto hover:translate-y-1 hover:shadow-md">
-                    Crear Cuenta
+                <div>
+                    <label for="contraseña" class="mb-2 block text-sm font-medium text-slate-300">Contraseña</label>
+                    <input type="password" id="contraseña" placeholder="••••••••" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none">
+                </div>
+
+                <button id="registrarUsuario" type="button" class="w-full rounded-xl bg-violet-500 px-4 py-3 font-semibold text-white shadow-lg shadow-violet-600/30 transition hover:bg-violet-400 hover:shadow-violet-500/20">
+                    Crear cuenta
                 </button>
-                <a href="/index.html">Ir a iniciar sesion</a>
-            </div>
 
-
-
-        </form>
-
+                <p class="text-center text-sm text-slate-400">
+                    ¿Ya tienes cuenta?
+                    <a href="/index.html" class="font-medium text-violet-300 hover:text-violet-200">Inicia sesión</a>
+                </p>
+            </form>
+        </div>
     </div>
 
     <script type="module" src="../scripts/autenticacion.js"></script>

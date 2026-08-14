@@ -35,7 +35,6 @@ const db = getFirestore(app);
 onAuthStateChanged(auth, async (usuario) => {
 
 
-
     // Recuperar nombre del usuario logueado
 
     const userDoc = await getDoc(doc(db, "usuarios", usuario.uid));
@@ -81,9 +80,12 @@ if (btnIngresar) {
             return;
         }
 
+        btnIngresar.disabled = true;
+        btnIngresar.textContent = "Cargando";
+        btnIngresar.classList.add("opacity-70", "cursor-not-allowed");
+
         try {
             await signInWithEmailAndPassword(auth, email, contraseña);
-            // SweetAlert2
             Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -98,6 +100,9 @@ if (btnIngresar) {
                 window.location.href = "/templates/home.html";
             }, 3000)
         } catch (error) {
+            btnIngresar.disabled = false;
+            btnIngresar.textContent = "Iniciar sesión";
+            btnIngresar.classList.remove("opacity-70", "cursor-not-allowed");
             alert("ERROR: " + error.message);
         }
     });
@@ -124,6 +129,10 @@ if (btnRegister) {
             return;
         }
 
+        btnRegister.disabled = true;
+        btnRegister.textContent = "Cargando";
+        btnRegister.classList.add("opacity-70", "cursor-not-allowed");
+
         try {
             const credencialUsuario = await createUserWithEmailAndPassword(auth, email, contraseña);
             const usuario = credencialUsuario.user;
@@ -134,9 +143,16 @@ if (btnRegister) {
                 contraseña
             });
 
+            btnRegister.disabled = false;
+            btnRegister.textContent = "Crear cuenta";
+            btnRegister.classList.remove("opacity-70", "cursor-not-allowed");
+
             alert("Usuario creado");
-            window.location.href = "/templates/index.html";
+            window.location.href = "/index.html";
         } catch (error) {
+            btnRegister.disabled = false;
+            btnRegister.textContent = "Crear cuenta";
+            btnRegister.classList.remove("opacity-70", "cursor-not-allowed");
             alert("ERROR: " + error.message);
         }
     });
