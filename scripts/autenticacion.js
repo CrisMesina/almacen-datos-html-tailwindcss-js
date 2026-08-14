@@ -30,14 +30,17 @@ const db = getFirestore(app);
 // ======================================                            ========================================== //
 // ============================================================================================================ //
 
+let redireccionamiento = false;
 
 onAuthStateChanged(auth, async (usuario) => {
 
     // Redireccionar a index si no se esta logueado
 
     if(!usuario){
-        window.location.href = "index.html";
-        return;
+        if(!redireccionamiento && window.location.pathname !== "/index.html"){
+            redireccionamiento = true;
+            window.location.replace("/index.html")
+        }
     }
 
 
@@ -53,6 +56,7 @@ onAuthStateChanged(auth, async (usuario) => {
 
     mostrarMisNotas(usuario.uid)
 })
+
 
 
 const btnRegister = document.getElementById("registrarUsuario");
