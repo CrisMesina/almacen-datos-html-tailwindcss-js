@@ -5,9 +5,8 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 ## Funcionalidades principales
 
 - Registro e inicio de sesión de usuarios con Firebase Auth.
-- Control de stock de inventario.
-- Visualización de ganancias y pérdidas.
-- Listado de compras para planificar compras futuras.
+- Creación de notas.
+- Visualización de notas.
 - Estructura modular con HTML, CSS y JavaScript.
 
 ## Estructura del proyecto
@@ -26,9 +25,9 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 2. Firebase Auth mantiene la sesión iniciada.
 3. Al acceder a la página interna (`home.html`), el JavaScript debe capturar el usuario autenticado y cargar sus datos.
 4. Desde la interfaz se debe poder:
-   - Administrar el stock de productos.
-   - Ver reportes de ganancias y pérdidas.
-   - Generar un listado de compras para futuros pedidos.
+  - Crear notas. 
+  - Ver notas creadas.
+
 
 ## Tecnologías
 
@@ -40,5 +39,5 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 
 ## Notas
 
-- El proyecto está pensado para extenderse con una página de inventario, reportes y lista de compras.
+- El proyecto está pensado para extenderse con una página sobre Diarios personales
 - La lógica de usuario conectado debe hacerse en el JavaScript de la página, no directamente en el HTML.
