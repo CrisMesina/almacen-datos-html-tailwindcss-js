@@ -40,6 +40,7 @@ onAuthStateChanged(auth, async (usuario) => {
         if(!redireccionamiento && window.location.pathname !== "/index.html"){
             redireccionamiento = true;
             window.location.replace("/index.html")
+            return;
         }
     }
 
