@@ -33,17 +33,17 @@ const db = getFirestore(app);
 
 
 onAuthStateChanged(auth, async (usuario) => {
-
+    if (!usuario) return;
 
     // Recuperar nombre del usuario logueado
-
     const userDoc = await getDoc(doc(db, "usuarios", usuario.uid));
     const nombre = userDoc.exists() ? userDoc.data().nombre : usuario.nomnre || usuario.email;
 
     // Incorporar nombre de usuario logueado en etiqueta html
-
-
-    document.getElementById("nombre-usuario").textContent = nombre;
+    const nombreUsuario = document.getElementById("nombre-usuario");
+    if (nombreUsuario) {
+        nombreUsuario.innerHTML = "Bienvenid@ " +"<span class='text-purple-500'>" + nombre + "!</span>";
+    }
 
     mostrarMisNotas(usuario.uid)
 })
@@ -52,6 +52,7 @@ onAuthStateChanged(auth, async (usuario) => {
 
 const btnRegister = document.getElementById("registrarUsuario");
 const btnIngresar = document.getElementById("iniciarSesion");
+const btnCerrarSesion = document.getElementById("logoutButton");
 
 // ============================================================================================================ //
 // ======================================                            ========================================== //
@@ -107,6 +108,9 @@ if (btnIngresar) {
         }
     });
 }
+
+
+
 
 
 // ============================================================================================================ //
@@ -199,20 +203,23 @@ const mostrarMisNotas = async (uid) =>{
     contenedorNotas.innerHTML = "";
     
     if(snapshop.empty){
-        contenedorNotas.innerHTML = "<p> NO HAS CREADO NINGUNA NOTA </p>";
+        contenedorNotas.innerHTML = '<p class="text-white ml-25 mt-10 font-bold text-2xl"> NO HAS CREADO NINGUNA NOTA </p>';
         return;
     }
 
     snapshop.forEach((docSnap) => {
         const nota =  docSnap.data();
         const div = document.createElement("div");
-        div.className = "border rounded-lg p-4 mb-4 mx-5 shadow-mb";
+        div.className = "rounded-2xl ml-25 border text-white mt-5 border-slate-700 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30 transition hover:border-violet-400/50 mx-4 mb-4";
         div.innerHTML = `
-            <p class="text-gray-700 text-sm text-end w-full italic mt-1"> ${formatearFecha(nota.creadoEl)} </p>
-            <h3 class="text-lg font-bold italic"> ${nota.titulo} </h3>
-            <p class="text-gray-700 mt-1"> ${nota.contenido} </h3>
-            `
-            contenedorNotas.appendChild(div)
+            <div class="mb-3 flex items-center justify-between gap-3">
+                <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">Nota</span>
+                <p class="text-xs text-slate-400">${formatearFecha(nota.creadoEl)}</p>
+            </div>
+            <h3 class="text-xl font-semibold text-white">${nota.titulo}</h3>
+            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-slate-300">${nota.contenido}</p>
+        `;
+        contenedorNotas.appendChild(div)
     })    
 }
 
@@ -225,9 +232,9 @@ const mostrarMisNotas = async (uid) =>{
 // ============================================================================================================= //
 
 
-// Caputrar boton para crear notas
-
+// Capturar boton para crear notas (usamos delegación para mayor robustez)
 const btnAbrirForm = document.getElementById("btnAbrirForm")
+const sidebar = document.getElementById('sidebar')
 
 // Capturar contenedor para mostrar formulario ( formulario usando absolute )
 
@@ -235,41 +242,67 @@ const contenedorHome = document.getElementById("contenedorHome");
 
 const abrirFormulario = () =>{
 
+
     contenedorHome.className = "flex"
     contenedorHome.innerHTML = `
-        <div class="w-full min-h-screen absolute backdrop-blur-sm"></div>
-        <div class="absolute z-1 top-50 w-120 p-20 left-64 bg-black text-white rounded-lg flex flex-col">
-            <div class="mb-15">
-                <input type="text" id="titulo" class="w-full text-center rounded-lg bg-gray-700 placeholder:italic shadow p-5" placeholder="Ingresa el titulo de tu nota" />
+        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <div class="w-full max-w-2xl rounded-2xl bg-slate-900 text-white p-6 shadow-xl">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Nueva nota</h3>
+                    <button id="cancelCrearNota" class="text-slate-400 hover:text-white">✕</button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="titulo" class="mb-1 block text-sm text-slate-300">Título</label>
+                        <input type="text" id="titulo" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Ingresa el título de tu nota" />
+                    </div>
+
+                    <div>
+                        <label for="contenido" class="mb-1 block text-sm text-slate-300">Contenido</label>
+                        <textarea id="contenido" rows="6" class="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Escribe aquí tu nota..."></textarea>
+                    </div>
+
+                    <div>
+                        <label for="fecha" class="mb-1 block text-sm text-slate-300">Fecha</label>
+                        <input type="date" id="fecha" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-violet-400 focus:outline-none" />
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-end gap-3">
+                    <button id="crearNota" class="rounded-xl bg-violet-500 px-4 py-2 font-semibold text-white shadow-md hover:bg-violet-400">Crear nota</button>
+                    <button id="cancelCrearNota2" class="rounded-xl bg-slate-700 px-4 py-2 text-slate-200 hover:bg-slate-600">Cancelar</button>
+                </div>
             </div>
-            <div class="mb-15">
-                <textarea id="contenido" class="w-full text-center rounded-lg bg-gray-700 placeholder:italic shadow p-5" placeholder="Ingresa el contenido"></textarea>
-            </div>
-            <div class="mb-15">
-                <input type="date" id="fecha" class="w-full text-center rounded-lg bg-gray-700 placeholder:italic shadow p-5" />
-            </div>
-            <button id="crearNota" class="text-white p-5 border rounded-lg"> Crear Nota </button>
         </div>
     `
 
     const btnCrearNota = document.getElementById("crearNota")
+    const btnCancel1 = document.getElementById("cancelCrearNota")
+    const btnCancel2 = document.getElementById("cancelCrearNota2")
 
     const crearNota = async () => {
 
-
-
         const usuario = auth.currentUser;
+
+        if(!usuario){
+            alert("No hay usuario autenticado.")
+            return;
+        }
         const uid = usuario.uid;
 
-        const titulo = document.getElementById("titulo").value;
-        const contenido = document.getElementById("contenido").value;
+        const titulo = document.getElementById("titulo").value.trim();
+        const contenido = document.getElementById("contenido").value.trim();
         const fecha = document.getElementById("fecha").value;
 
         if(!titulo || !contenido){
-            alert("INGRESA DATOS RETARDADO")
+            Swal.fire({icon: 'warning', title: 'Faltan datos', text: 'Completa título y contenido.'})
             return;
         }
 
+        btnCrearNota.disabled = true;
+        btnCrearNota.textContent = "Creando...";
+        btnCrearNota.classList.add("opacity-70", "cursor-not-allowed");
 
         try{
             await addDoc(collection(db, "notas"),{
@@ -280,15 +313,23 @@ const abrirFormulario = () =>{
                 creadoEl: serverTimestamp()
             })
 
-            alert("Nota creada")
-            window.location.href = "/templates/home.html"
+            const closeModal = () => { contenedorHome.className = "hidden" }
+            closeModal();
+            mostrarMisNotas(uid);
+            Swal.fire({icon: 'success', title: 'Nota creada'});
        } catch(e){
-            alert("ERROR: " , e)
+            btnCrearNota.disabled = false;
+            btnCrearNota.textContent = "Crear nota";
+            btnCrearNota.classList.remove("opacity-70", "cursor-not-allowed");
+            Swal.fire({icon: 'error', title: 'Error', text: String(e)})
         }
     }
 
     btnCrearNota.addEventListener('click', crearNota)
 
+    const closeModal = () => { contenedorHome.className = "hidden" }
+    btnCancel1?.addEventListener('click', closeModal)
+    btnCancel2?.addEventListener('click', closeModal)
 
 }
 
@@ -296,7 +337,15 @@ const cerrarFormulario = () =>{
     contenedorHome.className = "hidden"
 }
 
-btnAbrirForm.addEventListener('click', abrirFormulario);
+if (sidebar) {
+    sidebar.addEventListener('click', (e) => {
+        if (e.target.closest('#btnAbrirForm')) {
+            abrirFormulario();
+        }
+    });
+} else {
+    btnAbrirForm?.addEventListener('click', abrirFormulario);
+}
 
 
 
