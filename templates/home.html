@@ -1,15 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/index.css">
 </head>
-<body>
-    <h1>Bienvenido <span id="nombre-usuario"> cargando... </span></h1>
-    
+<body class="bg-slate-950 text-white min-h-screen overflow-hidden">
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="sidebar-collapsed fixed left-0 top-0 z-40 h-screen overflow-hidden bg-slate-900/90 border-r border-slate-700 shadow-2xl shadow-slate-950/60 transition-all duration-300 ease-in-out">
+            <div class="flex items-center justify-between px-4 py-5 border-b border-slate-700">
+                <button id="toggleSidebar" class="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-800 text-slate-200 hover:bg-slate-700 transition-colors" aria-label="Abrir menú" aria-expanded="false">
+                    ☰
+                </button>
+            </div>
 
+            <nav class="mt-6 space-y-2 px-3">
+                <button class="nav-item flex w-full items-center gap-3 rounded-xl bg-violet-500/20 px-3 py-3 text-violet-200 transition hover:bg-violet-500/30">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-500/20 text-lg">🏠</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Inicio</span>
+                </button>
 
-    <script type="module" src="/scripts/autenticacion.js" ></script>
+                <button class="nav-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-slate-300 transition hover:bg-slate-800">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-cyan-500/20 text-lg">📝</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Notas</span>
+                </button>
+
+                <button class="nav-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-slate-300 transition hover:bg-slate-800">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/20 text-lg">📊</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Estadísticas</span>
+                </button>
+
+                <button class="nav-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-slate-300 transition hover:bg-slate-800">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-amber-500/20 text-lg">⭐</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Favoritos</span>
+                </button>
+
+                <button class="nav-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-slate-300 transition hover:bg-slate-800">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-500/20 text-lg">⚙️</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Configuración</span>
+                </button>
+
+                <div class="my-6 border-t border-slate-700"></div>
+
+                <button id="logoutButton" class="nav-item flex w-full items-center gap-3 rounded-xl px-3 py-3 text-red-300 transition hover:bg-red-500/10">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/10 text-lg">🚪</span>
+                    <span class="nav-label whitespace-nowrap opacity-0 transition-opacity duration-300">Cerrar sesión</span>
+                </button>
+            </nav>
+        </aside>
+
+    </div>
+
+    <script type="module" src="../scripts/autenticacion.js"></script>
+    <script src="/scripts/home.js"></script>
 </body>
 </html>

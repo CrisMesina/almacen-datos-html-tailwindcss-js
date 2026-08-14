@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+
+</head>
+<bodyc class="min-h-screen">
+    
+
+    <div class=" flex border min-h-screen w-full h-96">
+
+        <form class="flex flex-col p-5 rounded-lg h-auto mx-auto my-auto shadow-md shadow-white bg-white" id="formulario-login"> 
+            
+            <div class="mb-5">
+                <input type="email" id="email" placeholder="Ingresar Correo" class="p-2 bg-black/10 rounded-lg placeholder:italic placeholder:text-md placeholder:text-gray-500">
+            </div>
+
+
+            <div class="mb-5">
+                <input type="password" id="contraseña" placeholder="Ingresar Contraseña" class="p-2 bg-black/10 rounded-lg placeholder:italic placeholder:text-md placeholder:text-gray-500">
+            </div>
+            
+
+            <div class="flex w-full">
+                <button id="iniciarSesion" type="button" class="p-2 mx-2 rounded-lg shadow-lg shadow-black font-bold  hover:shadow-md">
+                    Iniciar Sesion
+                </button>
+                <a href="/templates/form_register.html">
+                    ¿No tienes cuenta? Registrate!
+                </a>
+            </div>
+
+
+
+        </form>
+
+    </div>
+
+    <script type="module" src="../scripts/autenticacion.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+body {
+    background: #020817;
+    font-family: Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+}
+
+#sidebar {
+    width: 5rem;
+}
+
+#sidebar.sidebar-open {
+    width: 18rem;
+}
+
+#sidebar.sidebar-collapsed {
+    width: 5rem;
+}
+
+#toggleSidebar {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: 1.3rem;
+    transition: all 0.25s ease;
+}
+
+#sidebar.sidebar-open #toggleSidebar {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.1rem;
+}
+
+#mainContent {
+    margin-left: 5rem;
+}
+
+#mainContent.main-content-expanded {
+    margin-left: 18rem;
+}
+
+#mainContent.main-content-collapsed {
+    margin-left: 5rem;
+}
+
+.nav-label {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-8px);
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease;
+}
+
+.sidebar-open .nav-label,
+.sidebar-open .nav-item .nav-label {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.sidebar-collapsed .nav-item {
+    justify-content: center;
+    gap: 0;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+.sidebar-collapsed .nav-item > span:first-child {
+    margin: 0 auto;
+}
+
+.sidebar-collapsed .nav-item .nav-label {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.5);
+    border-radius: 9999px;
+}
