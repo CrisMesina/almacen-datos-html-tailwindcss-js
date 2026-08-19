@@ -45,7 +45,7 @@ onAuthStateChanged(auth, async (usuario) => {
         nombreUsuario.innerHTML = "Bienvenid@ " +"<span class='text-purple-500'>" + nombre + "!</span>";
     }
 
-    mostrarMisNotas(usuario.uid)
+    mostrarNotas();
 })
 
 
@@ -189,11 +189,14 @@ const formatearFecha = (timestamp) => {
 
 
 const contenedorNotas = document.getElementById("mostrar-notas");
+const btnMisNotas = document.getElementById("notasPersonales");
+const btnNotas = document.getElementById("notas");
+
+
 
 const mostrarMisNotas = async (uid) =>{
     if(!contenedorNotas) return;
     
-
     const q = query(
         collection(db, "notas"),
         where("uid", "==", uid),
@@ -222,6 +225,71 @@ const mostrarMisNotas = async (uid) =>{
         contenedorNotas.appendChild(div)
     })    
 }
+
+
+
+const mostrarNotas = async () => {
+    if(!contenedorNotas) return;
+
+    const q  =  query(
+        collection(db, "notas")
+    );
+    contenedorNotas.innerHTML = "";
+
+    
+    const snapshop = await getDocs(q);
+    
+    if(snapshop.empty){
+        contenedorNotas.innerHTML = '<p class="text-white ml-25 mt-10 font-bold text-2xl"> NO HAS CREADO NINGUNA NOTA </p>';
+        return;
+    }
+
+    snapshop.forEach((docSnap) => {
+        const nota =  docSnap.data();
+        const div = document.createElement("div");
+        div.className = "rounded-2xl ml-25 border text-white mt-5 border-slate-700 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30 transition hover:border-violet-400/50 mx-4 mb-4";
+        div.innerHTML = `
+            <div class="mb-3 flex items-center justify-between gap-3">
+                <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">Nota</span>
+                <p class="text-xs text-slate-400">${formatearFecha(nota.creadoEl)}</p>
+            </div>
+            <h3 class="text-xl font-semibold text-white">${nota.titulo}</h3>
+            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-slate-300">${nota.contenido}</p>
+        `;
+
+        contenedorNotas.appendChild(div)
+    })
+}
+
+// AL PRESIONAR BOTON, SE MUESTRAN NOTAS PERSONALES
+
+
+if (btnMisNotas) {
+    btnMisNotas.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const usuario = auth.currentUser;
+        if (!usuario) {
+            Swal.fire({ icon: 'warning', title: 'Debes iniciar sesión', text: 'Accede para ver tus notas.' });
+            return;
+        }
+        mostrarMisNotas(usuario.uid);
+    });
+}
+
+// AL PRESIONAR BOTON, SE MUESTRAN TODAS LAS NOTAS
+
+if(btnNotas) {
+    btnNotas.addEventListener('click', async(e) => {
+        e.preventDefault();
+        const usuario = auth.currentUser;
+        if(!usuario){
+            Swal.fire({ icon: 'warning', title: 'Debes iniciar sesión', text: 'Accede para ver tus notas.' });
+            return;
+        }
+        mostrarNotas()
+    })
+}
+
 
 
 
@@ -332,7 +400,6 @@ const abrirFormulario = () =>{
     btnCancel2?.addEventListener('click', closeModal)
 
 }
-
 const cerrarFormulario = () =>{
     contenedorHome.className = "hidden"
 }
@@ -346,6 +413,5 @@ if (sidebar) {
 } else {
     btnAbrirForm?.addEventListener('click', abrirFormulario);
 }
-
 
 
