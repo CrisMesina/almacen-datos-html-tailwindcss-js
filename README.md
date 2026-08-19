@@ -27,6 +27,8 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 4. Desde la interfaz se debe poder:
   - Crear notas. 
   - Ver notas creadas.
+  - Cambiar visibilidad de la nota.
+  - Dar "Me gusta" o "Corazón" a las notas.
 
 
 ## Tecnologías
@@ -41,3 +43,23 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 
 - El proyecto está pensado para extenderse con una página sobre Diarios personales
 - La lógica de usuario conectado debe hacerse en el JavaScript de la página, no directamente en el HTML.
+
+## Checklist — Cosas que faltan / sugeridas
+
+Aquí hay una lista de mejoras y elementos que recomiendo implementar para completar la página:
+
+- [ ] Validación de formularios en el cliente (mensajes claros por campo).
+- [ ] Editar y eliminar notas (UI + permisos en Firestore).
+- [ ] Botón para alternar visibilidad en cada nota (toggle) y listener delegado.
+- [ ] Reglas de seguridad de Firestore que restrinjan operaciones solo al propietario (`request.auth.uid == resource.data.uid`).
+- [ ] Manejo de errores y notificaciones consistentes (usar `Swal` o similar en todos los flujos).
+- [ ] Soporte para paginación o carga perezosa si hay muchas notas.
+- [ ] Búsqueda y filtrado de notas por título/contenido/fecha.
+- [ ] Tests básicos (script de pruebas manuales o unitarias simples).
+- [ ] Responsive y accesibilidad: revisar tamaños, contraste y navegación por teclado.
+- [ ] Sanitizar/escapar contenido mostrado para evitar inyección de HTML.
+- [ ] Optimizar consultas a Firestore (indexar campos usados en filtros/orden).
+- [ ] Documentación de despliegue (cómo publicar en Netlify/Vercel o Firebase Hosting).
+- [ ] Añadir ejemplo de reglas de Firestore en `README` o archivo separado.
+
+Marca los ítems cuando los vayas completando.
