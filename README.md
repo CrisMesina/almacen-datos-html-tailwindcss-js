@@ -59,5 +59,3 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 - [ ] Optimizar consultas a Firestore (indexar campos usados en filtros/orden).
 - [ ] Documentación de despliegue (cómo publicar en Netlify/Vercel o Firebase Hosting).
 - [ ] Añadir ejemplo de reglas de Firestore en `README` o archivo separado.
-
-Marca los ítems cuando los vayas completando.
