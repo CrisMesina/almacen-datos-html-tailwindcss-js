@@ -2,7 +2,7 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, where, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, where, and, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 // Configuracion entregada por firebase.
 
@@ -216,7 +216,7 @@ const mostrarMisNotas = async (uid) =>{
         div.className = "rounded-2xl ml-25 border text-white mt-5 border-slate-700 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30 transition hover:border-violet-400/50 mx-4 mb-4";
         div.innerHTML = `
             <div class="mb-3 flex items-center justify-between gap-3">
-                <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">Nota</span>
+                <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">Nota ${nota.visibilidad}</span>
                 <p class="text-xs text-slate-400">${formatearFecha(nota.creadoEl)}</p>
             </div>
             <h3 class="text-xl font-semibold text-white">${nota.titulo}</h3>
@@ -232,7 +232,8 @@ const mostrarNotas = async () => {
     if(!contenedorNotas) return;
 
     const q  =  query(
-        collection(db, "notas")
+        collection(db, "notas"),
+        where("visibilidad", "==" , "publica"),
     );
     contenedorNotas.innerHTML = "";
 
@@ -300,11 +301,12 @@ if(btnNotas) {
 // ============================================================================================================= //
 
 
-// Capturar boton para crear notas (usamos delegación para mayor robustez)
+// Capturar boton para crear notas 
+
 const btnAbrirForm = document.getElementById("btnAbrirForm")
 const sidebar = document.getElementById('sidebar')
 
-// Capturar contenedor para mostrar formulario ( formulario usando absolute )
+// Capturar contenedor para mostrar formulario( formulario usando absolute )
 
 const contenedorHome = document.getElementById("contenedorHome");
 
@@ -335,6 +337,20 @@ const abrirFormulario = () =>{
                         <label for="fecha" class="mb-1 block text-sm text-slate-300">Fecha</label>
                         <input type="date" id="fecha" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-violet-400 focus:outline-none" />
                     </div>
+                    
+                    <div>
+                        <label class="mb-1 block text-sm text-slate-300">Visibilidad de la nota</label>
+                        <div class="flex items-center gap-4 mt-5">
+                            <label class="inline-flex items-center text-sm">
+                                <input type="radio" name="visibilidad" value="publica" checked class="h-4 w-4 text-violet-500" />
+                                <span class="ml-2 text-slate-200">Pública</span>
+                            </label>
+                            <label class="inline-flex items-center text-sm">
+                                <input type="radio" name="visibilidad" value="privada" class="h-4 w-4 text-violet-500" />
+                                <span class="ml-2 text-slate-200">Privada</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="mt-6 flex justify-end gap-3">
@@ -362,6 +378,7 @@ const abrirFormulario = () =>{
         const titulo = document.getElementById("titulo").value.trim();
         const contenido = document.getElementById("contenido").value.trim();
         const fecha = document.getElementById("fecha").value;
+        const visibilidad = document.querySelector('input[name="visibilidad"]:checked')?.value || 'publica';
 
         if(!titulo || !contenido){
             Swal.fire({icon: 'warning', title: 'Faltan datos', text: 'Completa título y contenido.'})
@@ -378,6 +395,7 @@ const abrirFormulario = () =>{
                 titulo,
                 contenido,
                 fecha,
+                visibilidad,
                 creadoEl: serverTimestamp()
             })
 
