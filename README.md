@@ -44,9 +44,7 @@ Proyecto simple de inventario con autenticación Firebase y gestión básica de 
 - El proyecto está pensado para extenderse con una página sobre Diarios personales
 - La lógica de usuario conectado debe hacerse en el JavaScript de la página, no directamente en el HTML.
 
-## Checklist — Cosas que faltan / sugeridas
-
-Aquí hay una lista de mejoras y elementos que recomiendo implementar para completar la página:
+## Checklist — Cosas que faltan
 
 - [ ] Validación de formularios en el cliente (mensajes claros por campo).
 - [ ] Editar y eliminar notas (UI + permisos en Firestore).
