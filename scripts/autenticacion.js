@@ -475,8 +475,8 @@ const abrirFormulario = () =>{
         const fecha = document.getElementById("fecha").value;
         const visibilidad = document.querySelector('input[name="visibilidad"]:checked')?.value || 'publica';
 
-        if(!titulo || !contenido){
-            Swal.fire({icon: 'warning', title: 'Faltan datos', text: 'Completa título y contenido.'})
+        if(!titulo || !contenido || !fecha ){
+            Swal.fire({icon: 'warning', title: 'Faltan datos', text: 'Completa los datos faltantes... No puedes enviar datos vacios.'})
             return;
         }
 
