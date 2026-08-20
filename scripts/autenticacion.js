@@ -2,7 +2,21 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, getDocs, collection, query, where, and, orderBy, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+import {
+    getFirestore, 
+    doc, 
+    setDoc, 
+    getDoc, 
+    getDocs, 
+    updateDoc, 
+    collection, 
+    query, 
+    where, 
+    and,
+    orderBy, 
+    addDoc, 
+    serverTimestamp 
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 
 // Configuracion entregada por firebase.
 
@@ -213,18 +227,91 @@ const mostrarMisNotas = async (uid) =>{
     snapshop.forEach((docSnap) => {
         const nota =  docSnap.data();
         const div = document.createElement("div");
-        div.className = "rounded-2xl ml-25 border text-white mt-5 border-slate-700 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30 transition hover:border-violet-400/50 mx-4 mb-4";
+        div.className = "relative rounded-2xl ml-25 border text-white mt-5 border-slate-700 bg-slate-900/80 p-5 shadow-lg shadow-slate-950/30 transition hover:border-violet-400/50 mx-4 mb-4";
         div.innerHTML = `
             <div class="mb-3 flex items-center justify-between gap-3">
-                <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">Nota ${nota.visibilidad}</span>
-                <p class="text-xs text-slate-400">${formatearFecha(nota.creadoEl)}</p>
+            <span class="rounded-full bg-violet-500/15 px-2.5 py-1 text-xs font-medium text-violet-200">
+                Nota ${nota.visibilidad || "publica"}
+            </span>
+            <p class="text-xs text-slate-400">${formatearFecha(nota.creadoEl)}</p>
+        </div>
+
+        <h3 class="text-xl font-semibold text-white">${nota.titulo}</h3>
+        <p class="mt-3 whitespace-pre-line text-sm leading-6 text-slate-300">${nota.contenido}</p>
+
+        <div class="h-5">
+            <div class="absolute bottom-4 right-4">
+                <label class="inline-flex cursor-pointer items-center gap-2">
+                    <span class="text-[10px] uppercase tracking-wide text-slate-300">
+                        ${nota.visibilidad === "privada" ? "Privada" : "Publica"}
+                    </span>
+
+                    <input
+                        type="checkbox"
+                        class="peer sr-only nota-visibility-toggle"
+                        data-id="${docSnap.id}"
+                        data-vis="${nota.visibilidad || "publica"}"
+                        ${nota.visibilidad === "publica" ? "checked" : ""}
+                    />
+
+                    <span class="relative h-6 w-11 rounded-full bg-slate-700 transition-colors duration-200 peer-checked:bg-violet-500">
+                        <span class="absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform duration-200 peer-checked:translate-x-5"></span>
+                    </span>
+                </label>
             </div>
-            <h3 class="text-xl font-semibold text-white">${nota.titulo}</h3>
-            <p class="mt-3 whitespace-pre-line text-sm leading-6 text-slate-300">${nota.contenido}</p>
+        </div>
         `;
         contenedorNotas.appendChild(div)
     })    
 }
+
+contenedorNotas.addEventListener('change', async(e) => {
+    const input = e.target.closest(".nota-visibility-toggle");
+    if(!input) return;
+
+
+    const notaID = input.dataset.id;
+    const newVisibility = input.checked ? "publica" : "privada";
+
+    try{
+        await updateDoc(doc(db, "notas", notaID),{
+            visibilidad: newVisibility
+        });
+
+        mostrarMisNotas(auth.currentUser.uid);
+
+        Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: false,
+        }).fire({
+            icon: "success",
+            title: "Visibilidad de la pagina cambiada con exito."                
+        })
+
+        const label = input.parentElement.querySelector("span.text-\\[10px\\]");
+        if(label){
+            label.textContent = newVisibility === "privada" ? "Privada" : "Publica";
+        }
+    } catch(error){
+        console.error("Error al cambiar visibilidad:", error);
+        Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: false,
+        }).fire({
+            icon: "error",
+            title: "Ocurrio un error al intener actualizar la visibilidad."                
+        }) 
+    }
+
+    
+
+})
 
 
 
