@@ -1,7 +1,14 @@
 // Importaciones de firebase necesarios para el funcionamiento
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+import { 
+    getAuth, 
+    createUserWithEmailAndPassword, 
+    signInWithEmailAndPassword, 
+    onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
+
+
 import {
     getFirestore, 
     doc, 
@@ -122,9 +129,6 @@ if (btnIngresar) {
         }
     });
 }
-
-
-
 
 
 // ============================================================================================================ //
@@ -264,6 +268,10 @@ const mostrarMisNotas = async (uid) =>{
         contenedorNotas.appendChild(div)
     })    
 }
+
+
+// ------------------ CAMBIO DE VISIBILIDAD ------------------ //
+
 
 contenedorNotas.addEventListener('change', async(e) => {
     const input = e.target.closest(".nota-visibility-toggle");
@@ -412,17 +420,17 @@ const abrirFormulario = () =>{
                 <div class="space-y-4">
                     <div>
                         <label for="titulo" class="mb-1 block text-sm text-slate-300">Título</label>
-                        <input type="text" id="titulo" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Ingresa el título de tu nota" />
+                        <input type="text" required id="titulo" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Ingresa el título de tu nota" />
                     </div>
 
                     <div>
                         <label for="contenido" class="mb-1 block text-sm text-slate-300">Contenido</label>
-                        <textarea id="contenido" rows="6" class="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Escribe aquí tu nota..."></textarea>
+                        <textarea id="contenido" required rows="6" class="w-full resize-none rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white placeholder:text-slate-400 focus:border-violet-400 focus:outline-none" placeholder="Escribe aquí tu nota..."></textarea>
                     </div>
 
                     <div>
                         <label for="fecha" class="mb-1 block text-sm text-slate-300">Fecha</label>
-                        <input type="date" id="fecha" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-violet-400 focus:outline-none" />
+                        <input type="date" required id="fecha" class="w-full rounded-xl border border-slate-700 bg-slate-800 px-4 py-3 text-white focus:border-violet-400 focus:outline-none" />
                     </div>
                     
                     <div>
